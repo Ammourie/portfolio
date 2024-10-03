@@ -6,4 +6,5 @@ Welcome to my portfolio! I am a Flutter Developer passionate about creating beau
 
 To get started with my portfolio, follow these steps:
 
-**1. Clone the repository**
+> This portfolio is inspired by the [Magic Portfolio for Next.js](https://vercel.com/templates/next.js/magic-portfolio-for-next-js).
+
