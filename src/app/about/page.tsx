@@ -6,7 +6,7 @@ import styles from '@/app/about/about.module.scss'
 export function generateMetadata() {
 	const title = about.title;
 	const description = about.description;
-	const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
+	// const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
 
 	return {
 		title,
@@ -16,18 +16,18 @@ export function generateMetadata() {
 			description,
 			type: 'website',
 			url: `https://${baseURL}/blog`,
-			images: [
-				{
-					url: ogImage,
-					alt: title,
-				},
-			],
+			// images: [
+			// 	{
+			// 		// url: ogImage,
+			// 		alt: title,
+			// 	},
+			// ],
 		},
 		twitter: {
 			card: 'summary_large_image',
 			title,
 			description,
-			images: [ogImage],
+			// images: [ogImage],
 		},
 	};
 }
@@ -261,12 +261,16 @@ export default function About() {
                                                         border="neutral-medium"
                                                         borderStyle="solid-1"
                                                         radius="m"
+                                                        // @ts-ignore
                                                         minWidth={image.width} height={image.height}>
                                                         <SmartImage
                                                             enlarge
                                                             radius="m"
+                                                            // @ts-ignore
                                                             sizes={image.width.toString()}
+                                                            // @ts-ignore
                                                             alt={image.alt}
+                                                            // @ts-ignore
                                                             src={image.src}/>
                                                     </Flex>
                                                 ))}
@@ -346,12 +350,16 @@ export default function About() {
                                                         border="neutral-medium"
                                                         borderStyle="solid-1"
                                                         radius="m"
+                                                        // @ts-ignore
                                                         minWidth={image.width} height={image.height}>
                                                         <SmartImage
                                                             enlarge
                                                             radius="m"
+                                                            // @ts-ignore
                                                             sizes={image.width.toString()}
+                                                            // @ts-ignore
                                                             alt={image.alt}
+                                                            // @ts-ignore
                                                             src={image.src}/>
                                                     </Flex>
                                                 ))}

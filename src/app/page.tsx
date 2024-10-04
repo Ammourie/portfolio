@@ -1,126 +1,298 @@
-import React from 'react';
-
-import { Heading, Flex, Text, Button,  Avatar, RevealFx } from '@/once-ui/components';
-import { Projects } from '@/app/work/components/Projects';
-
-import { about, baseURL, home, newsletter, person, routes } from '@/app/resources'
-import { Mailchimp } from '@/app/components';
-import { Posts } from '@/app/blog/components/Posts';
-
+import {
+  Avatar,
+  Button,
+  Flex,
+  Heading,
+  Icon,
+  IconButton,
+  SmartImage,
+  Tag,
+  Text,
+} from "@/once-ui/components";
+import { person, about, social, baseURL } from "@/app/resources";
+import TableOfContents from "@/app/about/components/TableOfContents";
+import AboutMeCard from "./components/about-me-card";
+import styles from "./home.module.scss";
+import Separator from "./components/separator";
 export function generateMetadata() {
-	const title = home.title;
-	const description = home.description;
-	const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
+  const title = about.title;
+  const description = about.description;
+  const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
 
-	return {
-		title,
-		description,
-		openGraph: {
-			title,
-			description,
-			type: 'website',
-			url: `https://${baseURL}`,
-			images: [
-				{
-					url: ogImage,
-					alt: title,
-				},
-			],
-		},
-		twitter: {
-			card: 'summary_large_image',
-			title,
-			description,
-			images: [ogImage],
-		},
-	};
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: `https://${baseURL}`,
+      images: [
+        {
+          url: ogImage,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
 }
 
-export default function Home() {
-	return (
-		<Flex
-			maxWidth="m" fillWidth gap="xl"
-			direction="column" alignItems="center">
-			<script
-				type="application/ld+json"
-				suppressHydrationWarning
-				dangerouslySetInnerHTML={{
-					__html: JSON.stringify({
-						'@context': 'https://schema.org',
-						'@type': 'WebPage',
-						name: home.title,
-						description: home.description,
-						url: `https://${baseURL}`,
-						image: `${baseURL}/og?title=${encodeURIComponent(home.title)}`,
-						publisher: {
-							'@type': 'Person',
-							name: person.name,
-							image: {
-								'@type': 'ImageObject',
-								url: `${baseURL}${person.avatar}`,
-							},
-						},
-					}),
-				}}
-			/>
-			<Flex
-				fillWidth
-				direction="column"
-				paddingY="l" gap="m">
-				
-					<Flex
-						direction="column"
-						fillWidth maxWidth="s" gap="m">
-						<RevealFx translateY="4">
-							<Heading
-								wrap="balance"
-								variant="display-strong-l">
-								{home.headline}
-							</Heading>
-						</RevealFx>
-						<RevealFx translateY="8" delay={0.2}>
-							<Text
-								wrap="balance"
-								onBackground="neutral-weak"
-								variant="body-default-l">
-								{home.subline}
-							</Text>
-						</RevealFx>
-						<RevealFx translateY="12" delay={0.4}>
-							<Button
-								data-border="rounded"
-								href="/about"
-								variant="tertiary"
-								suffixIcon="chevronRight"
-								size="m">
-								<Flex
-									gap="8"
-									alignItems="center">
-									{about.avatar.display && (
-										<Avatar
-											style={{marginLeft: '-0.75rem', marginRight: '0.25rem'}}
-											src={person.avatar}
-											size="m"/>
-										)}
-										About me
-								</Flex>
-							</Button>
-						</RevealFx>
-					</Flex>
-				
-			</Flex>
-			<RevealFx translateY="16" delay={0.6}>
-				<Projects range={[1,1]}/>
-			</RevealFx>
-			{routes['/blog'] && (
-				<Flex fillWidth paddingX="20">
-					<Posts range={[1,2]} columns="2"/>
-				</Flex>
-			)}
-			<Projects range={[2]}/>
-			{ newsletter.display &&
-				<Mailchimp/>
-			}
-		</Flex>
-	);
+const structure = [
+  {
+    title: about.intro.title,
+    display: about.intro.display,
+    items: [],
+  },
+  {
+    title: about.work.title,
+    display: about.work.display,
+    items: about.work.experiences.map((experience) => experience.company),
+  },
+  {
+    title: about.studies.title,
+    display: about.studies.display,
+    items: about.studies.institutions.map((institution) => institution.name),
+  },
+  {
+    title: about.technical.title,
+    display: about.technical.display,
+    items: about.technical.skills.map((skill) => skill.title),
+  },
+];
+
+export default function About() {
+  return (
+    <Flex fillWidth maxWidth="m" direction="column">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: person.name,
+            jobTitle: person.role,
+            description: about.intro.description,
+            url: `https://${baseURL}/about`,
+            image: `${baseURL}/images/${person.avatar}`,
+            sameAs: social
+              .filter((item) => item.link && !item.link.startsWith("mailto:"))
+              .map((item) => item.link),
+            worksFor: {
+              "@type": "Organization",
+              name: about.work.experiences[0].company || "",
+            },
+          }),
+        }}
+      />
+      {about.tableOfContent.display && (
+        <Flex
+          style={{ left: "0", top: "50%", transform: "translateY(-50%)" }}
+          position="fixed"
+          paddingLeft="24"
+          gap="32"
+          direction="column"
+          hide="s"
+        >
+          <TableOfContents structure={structure} about={about} />
+        </Flex>
+      )}
+      <Flex fillWidth mobileDirection="column" justifyContent="center">
+        <Flex
+          className={styles.blockAlign}
+          fillWidth
+          flex={9}
+          maxWidth={40}
+          direction="column"
+          gap="xl"
+        >
+          <Flex direction="column" fillWidth id={about.intro.title}>
+            <AboutMeCard /> <Separator />
+            {about.intro.display && (
+              <Flex direction="column" textVariant="body-default-l" fillWidth>
+                {about.intro.description}
+              </Flex>
+            )}
+          </Flex>
+          {about.work.display && (
+            <>
+              <Heading
+                as="h2"
+                id={about.work.title}
+                variant="display-strong-s"
+               
+              >
+                {about.work.title}
+              </Heading>
+              <Flex direction="column" fillWidth gap="l" marginBottom="40">
+                {about.work.experiences.map((experience, index) => (
+                  <Flex
+                    key={`${experience.company}-${experience.role}-${index}`}
+                    fillWidth
+                    direction="column"
+                  >
+                    <Flex
+                      fillWidth
+                      justifyContent="space-between"
+                      alignItems="flex-end"
+                      marginBottom="4"
+                    >
+                      <Text id={experience.company} variant="heading-strong-l">
+                        {experience.company}
+                      </Text>
+                      <Text
+                        variant="heading-default-xs"
+                        onBackground="neutral-weak"
+                      >
+                        {experience.timeframe}
+                      </Text>
+                    </Flex>
+                    <Text
+                      variant="body-default-s"
+                      onBackground="brand-weak"
+                      marginBottom="m"
+                    >
+                      {experience.role}
+                    </Text>
+                    <Flex as="ul" direction="column" gap="16">
+                      {experience.achievements.map((achievement, index) => (
+                        <Text
+                          as="li"
+                          variant="body-default-m"
+                          key={`${experience.company}-${index}`}
+                        >
+                          {achievement}
+                        </Text>
+                      ))}
+                    </Flex>
+                    {experience.images.length > 0 && (
+                      <Flex fillWidth paddingTop="m" paddingLeft="40" wrap>
+                        {experience.images.map((image, index) => (
+                          <Flex
+                            key={index}
+                            border="neutral-medium"
+                            borderStyle="solid-1"
+                            radius="m"
+                            // @ts-ignore
+                            minWidth={image.width}
+                            // @ts-ignore
+                            height={image.height}
+                          >
+                            <SmartImage
+                              enlarge
+                              radius="m"
+                              // @ts-ignore
+                              sizes={image.width.toString()}
+                              // @ts-ignore
+                              alt={image.alt}
+                              // @ts-ignore
+                              src={image.src}
+                            />
+                          </Flex>
+                        ))}
+                      </Flex>
+                    )}
+                  </Flex>
+                ))}
+              </Flex>
+            </>
+          )}
+
+          {about.studies.display && (
+            <>
+              <Heading
+                as="h2"
+                id={about.studies.title}
+                variant="display-strong-s"
+                marginBottom="m"
+              >
+                {about.studies.title}
+              </Heading>
+              <Flex direction="column" fillWidth gap="l" marginBottom="40">
+                {about.studies.institutions.map((institution, index) => (
+                  <Flex
+                    key={`${institution.name}-${index}`}
+                    fillWidth
+                    gap="4"
+                    direction="column"
+                  >
+                    <Text id={institution.name} variant="heading-strong-l">
+                      {institution.name}
+                    </Text>
+                    <Text
+                      variant="heading-default-xs"
+                      onBackground="neutral-weak"
+                    >
+                      {institution.description}
+                    </Text>
+                  </Flex>
+                ))}
+              </Flex>
+            </>
+          )}
+
+          {about.technical.display && (
+            <>
+              <Heading
+                as="h2"
+                id={about.technical.title}
+                variant="display-strong-s"
+                marginBottom="40"
+              >
+                {about.technical.title}
+              </Heading>
+              <Flex direction="column" fillWidth gap="l">
+                {about.technical.skills.map((skill, index) => (
+                  <Flex
+                    key={`${skill}-${index}`}
+                    fillWidth
+                    gap="4"
+                    direction="column"
+                  >
+                    <Text variant="heading-strong-l">{skill.title}</Text>
+                    <Text variant="body-default-m" onBackground="neutral-weak">
+                      {skill.description}
+                    </Text>
+                    {skill.images.length > 0 && (
+                      <Flex fillWidth paddingTop="m" gap="12" wrap>
+                        {skill.images.map((image, index) => (
+                          <Flex
+                            key={index}
+                            border="neutral-medium"
+                            borderStyle="solid-1"
+                            radius="m"
+                            // @ts-ignore
+                            minWidth={image.width}
+                            // @ts-ignore
+                            height={image.height}
+                          >
+                            <SmartImage
+                              enlarge
+                              radius="m"
+                              // @ts-ignore
+                              sizes={image.width.toString()}
+                              // @ts-ignore
+                              alt={image.alt}
+                              // @ts-ignore
+                              src={image.src}
+                            />
+                          </Flex>
+                        ))}
+                      </Flex>
+                    )}
+                  </Flex>
+                ))}
+              </Flex>
+            </>
+          )}
+        </Flex>
+      </Flex>
+    </Flex>
+  );
 }
