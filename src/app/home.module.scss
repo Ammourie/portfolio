@@ -15,3 +15,101 @@
         align-self: center;
     }
 }
+
+// New styles for work experience section
+.workExperience {
+    &__container {
+        border-left: 2px solid var(--color-neutral-weak);
+        padding-left: var(--static-space-24);
+        position: relative;
+        transition: border-color 0.3s ease;
+
+        &:hover {
+            border-color: var(--color-brand-strong);
+        }
+    }
+
+    &__item {
+        margin-bottom: var(--static-space-40);
+        position: relative;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: translateX(var(--static-space-4));
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: calc(var(--static-space-24) * -1 - 1px);
+            top: 0;
+            width: 10px;
+            height: 10px;
+            background-color: var(--color-brand-strong);
+            border-radius: 50%;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        &:hover::before {
+            transform: scale(1.2);
+            background-color: var(--color-brand-weak);
+        }
+    }
+
+    &__company {
+        font-weight: bold;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: var(--color-brand-strong);
+        }
+    }
+
+    &__timeframe {
+        font-style: italic;
+        transition: opacity 0.3s ease;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    &__role {
+        color: var(--color-brand-strong);
+        margin-bottom: var(--static-space-8);
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: var(--color-brand-weak);
+        }
+    }
+
+    &__achievements {
+        list-style-type: disc;
+        padding-left: var(--static-space-20);
+
+        li {
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: translateX(var(--static-space-4));
+            }
+        }
+    }
+
+    &__images {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--static-space-12);
+        margin-top: var(--static-space-16);
+
+        img {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+            &:hover {
+                transform: scale(1.05);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+}

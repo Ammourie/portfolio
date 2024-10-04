@@ -126,16 +126,17 @@ export default function About() {
                 as="h2"
                 id={about.work.title}
                 variant="display-strong-s"
-               
+                className={styles.workExperience__container}
               >
                 {about.work.title}
               </Heading>
-              <Flex direction="column" fillWidth gap="l" marginBottom="40">
+              <Flex direction="column" fillWidth gap="l" className={styles.workExperience__container}>
                 {about.work.experiences.map((experience, index) => (
                   <Flex
                     key={`${experience.company}-${experience.role}-${index}`}
                     fillWidth
                     direction="column"
+                    className={styles.workExperience__item}
                   >
                     <Flex
                       fillWidth
@@ -143,12 +144,13 @@ export default function About() {
                       alignItems="flex-end"
                       marginBottom="4"
                     >
-                      <Text id={experience.company} variant="heading-strong-l">
+                      <Text id={experience.company} variant="heading-strong-l" className={styles.workExperience__company}>
                         {experience.company}
                       </Text>
                       <Text
                         variant="heading-default-xs"
                         onBackground="neutral-weak"
+                        className={styles.workExperience__timeframe}
                       >
                         {experience.timeframe}
                       </Text>
@@ -157,10 +159,11 @@ export default function About() {
                       variant="body-default-s"
                       onBackground="brand-weak"
                       marginBottom="m"
+                      className={styles.workExperience__role}
                     >
                       {experience.role}
                     </Text>
-                    <Flex as="ul" direction="column" gap="16">
+                    <Flex as="ul" direction="column" gap="16" className={styles.workExperience__achievements}>
                       {experience.achievements.map((achievement, index) => (
                         <Text
                           as="li"
@@ -172,7 +175,7 @@ export default function About() {
                       ))}
                     </Flex>
                     {experience.images.length > 0 && (
-                      <Flex fillWidth paddingTop="m" paddingLeft="40" wrap>
+                      <Flex fillWidth className={styles.workExperience__images}>
                         {experience.images.map((image, index) => (
                           <Flex
                             key={index}
