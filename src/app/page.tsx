@@ -130,7 +130,12 @@ export default function About() {
               >
                 {about.work.title}
               </Heading>
-              <Flex direction="column" fillWidth gap="l" className={styles.workExperience__container}>
+              <Flex
+                direction="column"
+                fillWidth
+                gap="l"
+                className={styles.workExperience__container}
+              >
                 {about.work.experiences.map((experience, index) => (
                   <Flex
                     key={`${experience.company}-${experience.role}-${index}`}
@@ -144,7 +149,11 @@ export default function About() {
                       alignItems="flex-end"
                       marginBottom="4"
                     >
-                      <Text id={experience.company} variant="heading-strong-l" className={styles.workExperience__company}>
+                      <Text
+                        id={experience.company}
+                        variant="heading-strong-l"
+                        className={styles.workExperience__company}
+                      >
                         {experience.company}
                       </Text>
                       <Text
@@ -163,7 +172,12 @@ export default function About() {
                     >
                       {experience.role}
                     </Text>
-                    <Flex as="ul" direction="column" gap="16" className={styles.workExperience__achievements}>
+                    <Flex
+                      as="ul"
+                      direction="column"
+                      gap="16"
+                      className={styles.workExperience__achievements}
+                    >
                       {experience.achievements.map((achievement, index) => (
                         <Text
                           as="li"
@@ -213,24 +227,35 @@ export default function About() {
                 as="h2"
                 id={about.studies.title}
                 variant="display-strong-s"
-                marginBottom="m"
               >
                 {about.studies.title}
               </Heading>
-              <Flex direction="column" fillWidth gap="l" marginBottom="40">
+              <Flex
+                direction="column"
+                fillWidth
+                gap="l"
+                marginBottom="40"
+                className={styles.studies__container}
+              >
                 {about.studies.institutions.map((institution, index) => (
                   <Flex
                     key={`${institution.name}-${index}`}
                     fillWidth
                     gap="4"
                     direction="column"
+                    className={styles.studies__item}
                   >
-                    <Text id={institution.name} variant="heading-strong-l">
+                    <Text
+                      id={institution.name}
+                      variant="heading-strong-l"
+                      className={styles.studies__institution}
+                    >
                       {institution.name}
                     </Text>
                     <Text
                       variant="heading-default-xs"
                       onBackground="neutral-weak"
+                      className={styles.studies__description}
                     >
                       {institution.description}
                     </Text>
@@ -246,51 +271,54 @@ export default function About() {
                 as="h2"
                 id={about.technical.title}
                 variant="display-strong-s"
-                marginBottom="40"
               >
                 {about.technical.title}
               </Heading>
               <Flex direction="column" fillWidth gap="l">
-                {about.technical.skills.map((skill, index) => (
-                  <Flex
-                    key={`${skill}-${index}`}
-                    fillWidth
-                    gap="4"
-                    direction="column"
-                  >
-                    <Text variant="heading-strong-l">{skill.title}</Text>
-                    <Text variant="body-default-m" onBackground="neutral-weak">
-                      {skill.description}
-                    </Text>
-                    {skill.images.length > 0 && (
-                      <Flex fillWidth paddingTop="m" gap="12" wrap>
-                        {skill.images.map((image, index) => (
-                          <Flex
-                            key={index}
-                            border="neutral-medium"
-                            borderStyle="solid-1"
-                            radius="m"
-                            // @ts-ignore
-                            minWidth={image.width}
-                            // @ts-ignore
-                            height={image.height}
-                          >
-                            <SmartImage
-                              enlarge
-                              radius="m"
-                              // @ts-ignore
-                              sizes={image.width.toString()}
-                              // @ts-ignore
-                              alt={image.alt}
-                              // @ts-ignore
-                              src={image.src}
-                            />
-                          </Flex>
-                        ))}
+                <Text variant="heading-strong-l">Proficient</Text>
+                <Flex fillWidth gap="s" wrap className={styles.technical__proficient}>
+                  {about.technical.skills
+                    .filter((skill) => skill.isProficient)
+                    .map((skill, index) => (
+                      <Flex
+                        key={`${skill.title}-${index}`}
+                        direction="column"
+                        align="center"
+                        justifyContent="center"
+                        width={7}
+                        height={7}
+                        border="neutral-medium"
+                        borderStyle="solid-1"
+                        radius="m"
+                        className={styles.technical__skill}
+                      >
+                        <Text variant="body-strong-s">{skill.title}</Text>
                       </Flex>
-                    )}
+                    ))}
+                </Flex>
+                <Flex direction="column" fillWidth gap="l">
+                  <Text variant="heading-strong-l">Familiar</Text>
+                  <Flex fillWidth gap="m" wrap className={styles.technical__familiar}>
+                    {about.technical.skills
+                      .filter((skill) => skill.isFamiliar)
+                      .map((skill, index) => (
+                        <Flex
+                          key={`${skill.title}-${index}`}
+                          direction="column"
+                          align="center"
+                          justifyContent="center"
+                          width={7}
+                          height={7}
+                          border="neutral-medium"
+                          borderStyle="solid-1"
+                          radius="m"
+                          className={styles.technical__skill}
+                        >
+                          <Text variant="body-strong-s">{skill.title}</Text>
+                        </Flex>
+                      ))}
                   </Flex>
-                ))}
+                </Flex>
               </Flex>
             </>
           )}

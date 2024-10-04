@@ -166,8 +166,8 @@ const about = {
             {
                 title: 'Next.js',
                 description: <>Experienced in building server-side rendered and statically generated React applications.</>,
-                isFamiliar: false,
-                isProficient: true,
+                isFamiliar: true,
+                isProficient: false,
                 images: []
             },
             {
