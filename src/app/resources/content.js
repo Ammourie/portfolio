@@ -14,7 +14,7 @@ const person = {
 
 const newsletter = {
     display: false,
-    title: <>Subscribe to {person.firstName}'s Newsletter</>,
+    title: <>Subscribe to {person.firstName}&apos;s Newsletter</>,
     description: <>I occasionally write about design, technology, and share thoughts on the intersection of creativity and engineering.</>
 }
 
@@ -66,7 +66,7 @@ const home ={
     intro: {
         display: true,
         title: 'Introduction',
-        description: <>I am a passionate Flutter developer with a knack for creating seamless, cross-platform mobile applications. With a strong foundation in software engineering and a keen eye for user-centric design, I excel at transforming complex ideas into intuitive, high-performance mobile experiences. My expertise spans the entire mobile development lifecycle, from conceptualization to deployment, with a particular focus on leveraging Flutter's capabilities to build beautiful, responsive, and efficient apps.</>
+        description: <>I am a passionate Flutter developer with a knack for creating seamless, cross-platform mobile applications. With a strong foundation in software engineering and a keen eye for user-centric design, I excel at transforming complex ideas into intuitive, high-performance mobile experiences. My expertise spans the entire mobile development lifecycle, from conceptualization to deployment, with a particular focus on leveraging Flutter&apos;s capabilities to build beautiful, responsive, and efficient apps.</>
     },
     work: {
         display: true, // set to false to hide this section
@@ -115,11 +115,11 @@ const home ={
         institutions: [
             {
                 name: 'Albaath University, Homs',
-                description: <>Earned a Bachelor's degree in Networks Engineering from October 2017 to October 2022, achieving a commendable grade point average of 80.999.</>,
+                description: <>Earned a Bachelor&apos;s degree in Networks Engineering from October 2017 to October 2022, achieving a commendable grade point average of 80.999.</>,
             },
             {
                 name: 'Syrian Virtual University',
-                description: <>Currently pursuing a Master's degree in Web Science, commenced in January 2023 and ongoing.</>,
+                description: <>Currently pursuing a Master&apos;s degree in Web Science, commenced in January 2023 and ongoing.</>,
             }
         ]
     },
