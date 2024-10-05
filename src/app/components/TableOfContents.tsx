@@ -11,7 +11,7 @@ interface TableOfContentsProps {
     display: boolean;
     items: string[];
   }[];
-  about: {
+  home: {
     tableOfContent: {
       display: boolean;
       subItems: boolean;
@@ -21,7 +21,7 @@ interface TableOfContentsProps {
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({
   structure,
-  about,
+  home,
 }) => {
   const [selectedSection, setSelectedSection] = React.useState(0);
 
@@ -38,7 +38,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
     }
   };
 
-  if (!about.tableOfContent.display) return null;
+  if (!home.tableOfContent.display) return null;
 
   return (
     <Flex
@@ -95,7 +95,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
               />
               <Text color={"inherit"}>{section.title}</Text>
             </Flex>
-            {about.tableOfContent.subItems && (
+            {home.tableOfContent.subItems && (
               <>
                 {section.items.map((item, itemIndex) => (
                   <Flex

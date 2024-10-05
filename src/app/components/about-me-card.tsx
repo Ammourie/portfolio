@@ -1,5 +1,5 @@
 import { Avatar, Button, Flex, Icon, Tag, Text } from "@/once-ui/components";
-import { about, person, social, style } from "../resources";
+import { home, person, social, style } from "../resources";
 import styles from "./about-me-card.module.scss";
 
 const AboutMeCard = () => {
@@ -15,7 +15,7 @@ const AboutMeCard = () => {
           direction="row"
           alignItems="flex-start"
         >
-          {about.avatar.display && (
+          {home.avatar.display && (
             <Flex direction="column" alignItems="center" marginRight="l">
               <Avatar src={person.avatar} size="xl" />
             </Flex>
@@ -25,7 +25,7 @@ const AboutMeCard = () => {
               <Text
                 variant="heading-strong-xl"
                 style={{
-                  fontSize: about.avatar.display ? "2.5rem" : "3rem",
+                  fontSize: home.avatar.display ? "2.5rem" : "3rem",
                   color: "var(--brand-strong)",
                   letterSpacing: "-0.02em",
                 }}
@@ -38,7 +38,7 @@ const AboutMeCard = () => {
                 variant="body-strong-l"
                 onBackground="neutral-weak"
                 style={{
-                  fontSize: about.avatar.display ? "1.5rem" : "1.75rem",
+                  fontSize: home.avatar.display ? "1.5rem" : "1.75rem",
                   fontWeight: 600,
                   color: "grey",
                   textTransform: "uppercase",

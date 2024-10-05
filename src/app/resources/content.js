@@ -48,17 +48,9 @@ const social = [
     },
 ]
 
-const home = {
+const home ={
     label: 'Home',
-    title: `${person.name}'s Portfolio`,
-    description: `Portfolio website showcasing my work as a ${person.role}`,
-    headline: <>Design engineer and builder</>,
-    subline: <>I'm Selene, a design engineer at <InlineCode>FLY</InlineCode>, where I craft intuitive<br/> user experiences. After hours, I build my own projects.</>
-}
-
-const about = {
-    label: 'About',
-    title: 'About me',
+    title: 'Home',
     description: `Meet ${person.name}, ${person.role} from ${person.location}`,
     tableOfContent: {
         display: true,
@@ -332,4 +324,4 @@ const gallery = {
     ]
 }
 
-export { person, social, newsletter, home, about, blog, work, gallery };
+export { person, social, newsletter, home, blog, work, gallery };

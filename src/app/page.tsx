@@ -9,14 +9,14 @@ import {
   Tag,
   Text,
 } from "@/once-ui/components";
-import { person, about, social, baseURL } from "@/app/resources";
+import { person, home, social, baseURL } from "@/app/resources";
 import TableOfContents from "@/app/components/TableOfContents";
 import AboutMeCard from "./components/about-me-card";
 import styles from "./home.module.scss";
 import Separator from "./components/separator";
 export function generateMetadata() {
-  const title = about.title;
-  const description = about.description;
+  const title = home.title;
+  const description = home.description;
   const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
 
   return {
@@ -45,24 +45,24 @@ export function generateMetadata() {
 
 const structure = [
   {
-    title: about.intro.title,
-    display: about.intro.display,
+    title: home.intro.title,
+    display: home.intro.display,
     items: [],
   },
   {
-    title: about.work.title,
-    display: about.work.display,
-    items: about.work.experiences.map((experience) => experience.company),
+    title: home.work.title,
+    display: home.work.display,
+    items: home.work.experiences.map((experience) => experience.company),
   },
   {
-    title: about.studies.title,
-    display: about.studies.display,
-    items: about.studies.institutions.map((institution) => institution.name),
+    title: home.studies.title,
+    display: home.studies.display,
+    items: home.studies.institutions.map((institution) => institution.name),
   },
   {
-    title: about.technical.title,
-    display: about.technical.display,
-    items: about.technical.skills.map((skill) => skill.title),
+    title: home.technical.title,
+    display: home.technical.display,
+    items: home.technical.skills.map((skill) => skill.title),
   },
 ];
 
@@ -78,7 +78,7 @@ export default function About() {
             "@type": "Person",
             name: person.name,
             jobTitle: person.role,
-            description: about.intro.description,
+            description: home.intro.description,
             url: `https://${baseURL}/about`,
             image: `${baseURL}/images/${person.avatar}`,
             sameAs: social
@@ -86,12 +86,12 @@ export default function About() {
               .map((item) => item.link),
             worksFor: {
               "@type": "Organization",
-              name: about.work.experiences[0].company || "",
+              name: home.work.experiences[0].company || "",
             },
           }),
         }}
       />
-      {about.tableOfContent.display && (
+      {home.tableOfContent.display && (
         <Flex
           style={{ left: "0", top: "50%", transform: "translateY(-50%)" }}
           position="fixed"
@@ -100,7 +100,7 @@ export default function About() {
           direction="column"
           hide="s"
         >
-          <TableOfContents structure={structure} about={about} />
+          <TableOfContents structure={structure} home={home} />
         </Flex>
       )}
       <Flex fillWidth mobileDirection="column" justifyContent="center">
@@ -112,23 +112,23 @@ export default function About() {
           direction="column"
           gap="xl"
         >
-          <Flex direction="column" fillWidth id={about.intro.title}>
+          <Flex direction="column" fillWidth id={home.intro.title}>
             <AboutMeCard /> <Separator />
-            {about.intro.display && (
+            {home.intro.display && (
               <Flex direction="column" textVariant="body-default-l" fillWidth>
-                {about.intro.description}
+                {home.intro.description}
               </Flex>
             )}
           </Flex>
-          {about.work.display && (
+          {home.work.display && (
             <>
               <Heading
                 as="h2"
-                id={about.work.title}
+                id={home.work.title}
                 variant="display-strong-s"
                 className={styles.workExperience__container}
               >
-                {about.work.title}
+                {home.work.title}
               </Heading>
               <Flex
                 direction="column"
@@ -136,7 +136,7 @@ export default function About() {
                 gap="l"
                 className={styles.workExperience__container}
               >
-                {about.work.experiences.map((experience, index) => (
+                {home.work.experiences.map((experience, index) => (
                   <Flex
                     key={`${experience.company}-${experience.role}-${index}`}
                     fillWidth
@@ -221,14 +221,14 @@ export default function About() {
             </>
           )}
 
-          {about.studies.display && (
+          {home.studies.display && (
             <>
               <Heading
                 as="h2"
-                id={about.studies.title}
+                id={home.studies.title}
                 variant="display-strong-s"
               >
-                {about.studies.title}
+                {home.studies.title}
               </Heading>
               <Flex
                 direction="column"
@@ -237,7 +237,7 @@ export default function About() {
                 marginBottom="40"
                 className={styles.studies__container}
               >
-                {about.studies.institutions.map((institution, index) => (
+                {home.studies.institutions.map((institution, index) => (
                   <Flex
                     key={`${institution.name}-${index}`}
                     fillWidth
@@ -265,19 +265,19 @@ export default function About() {
             </>
           )}
 
-          {about.technical.display && (
+          {home.technical.display && (
             <>
               <Heading
                 as="h2"
-                id={about.technical.title}
+                id={home.technical.title}
                 variant="display-strong-s"
               >
-                {about.technical.title}
+                {home.technical.title}
               </Heading>
               <Flex direction="column" fillWidth gap="l">
                 <Text variant="heading-strong-l">Proficient</Text>
                 <Flex fillWidth gap="s" wrap className={styles.technical__proficient}>
-                  {about.technical.skills
+                  {home.technical.skills
                     .filter((skill) => skill.isProficient)
                     .map((skill, index) => (
                       <Flex
@@ -299,7 +299,7 @@ export default function About() {
                 <Flex direction="column" fillWidth gap="l">
                   <Text variant="heading-strong-l">Familiar</Text>
                   <Flex fillWidth gap="m" wrap className={styles.technical__familiar}>
-                    {about.technical.skills
+                    {home.technical.skills
                       .filter((skill) => skill.isFamiliar)
                       .map((skill, index) => (
                         <Flex
