@@ -2,7 +2,6 @@ const baseURL = 'nextjs-portfolio.up.railway.app'
 
 const routes = {
     '/':        true,
-    '/about':   false,
     '/work':    true,
     '/blog':    true,
     '/gallery': false,

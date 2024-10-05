@@ -10,7 +10,7 @@ import {
   Text,
 } from "@/once-ui/components";
 import { person, about, social, baseURL } from "@/app/resources";
-import TableOfContents from "@/app/about/components/TableOfContents";
+import TableOfContents from "@/app/components/TableOfContents";
 import AboutMeCard from "./components/about-me-card";
 import styles from "./home.module.scss";
 import Separator from "./components/separator";
