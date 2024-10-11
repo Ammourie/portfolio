@@ -68,11 +68,10 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": "true"
+
       },
       body: JSON.stringify({ password, email }),
-      mode: "no-cors"
+  
     });
 
     if (response.ok) {

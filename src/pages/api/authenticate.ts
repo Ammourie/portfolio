@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import cookie from "cookie";
 import { prisma } from "@/lib/prisma";
-import crypto from 'crypto';
+import crypto from "crypto";
+import { log } from "console";
 
 interface ValidationError {
   field: string;
@@ -44,61 +45,53 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // Return dummy JSON for testing purposes
-  return res.status(200).json({
-    success: true,
-    message: "This is a dummy response",
-    data: {
+  if (req.method !== "POST") {
+    // Return a dummy response for testing purposes
+    return res.status(200).json({
+      success: true,
+      message: "This is a dummy response for testing",
       user: {
-        id: 1,
-        email: "test@example.com",
-        name: "Test User"
+        id: "dummy-id",
+        email: "dummy@example.com",
+        name: "Dummy User",
       },
-      token: "dummy-auth-token-12345"
-    }
-  });
-  // console.log(req.method);
-  // console.log((req.method !== 'POST').toString());
-  // if (req.method !== 'POST') {
-  //   return res
-  //     .status(405)
-  //     .json({ errors: [{ field: "method", error: "Method Not Allowed" }] });
-  // }
+    });
+    // return res
+    //   .status(405)
+    //   .json({ errors: [{ field: "method", error: "Method Not Allowed" }] });
+  }
 
-  // const { password, email } = JSON.parse(req.body);
-  // const errors: ValidationError[] = [];
+  const { password, email } = req.body;
+  const errors: ValidationError[] = [];
 
-  // const emailError = validateEmail(email);
-  // const passwordError = validatePassword(password);
+  const emailError = validateEmail(email);
+  const passwordError = validatePassword(password);
 
+  if (emailError) errors.push(emailError);
+  if (passwordError) errors.push(passwordError);
 
-  
-  // if (emailError) errors.push(emailError);
-  // if (passwordError) errors.push(passwordError);
+  if (errors.length > 0) {
+    return res.status(400).json({ errors });
+  }
 
-  // if (errors.length > 0) {
-  //   return res.status(400).json({ errors });
-  // }
+  const user = await prisma.user.findUnique({ where: { email } });
 
-  // const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    return res
+      .status(404)
+      .json({ errors: [{ field: "email", error: "Email not found" }] });
+  }
 
-  // if (!user) {
-  //   return res
-  //     .status(404)
-  //     .json({ errors: [{ field: "email", error: "Email not found" }] });
-  // }
-
-  // if (createMD5Hash(password) === user.password) {
-  //   setAuthCookie(res);
-  //   return res.status(200).json({ success: true });
-  // } else {
-  //   return res
-  //     .status(401)
-  //     .json({ errors: [{ field: "password", error: "Incorrect password" }] });
-  // }
+  if (createMD5Hash(password) === user.password) {
+    setAuthCookie(res);
+    return res.status(200).json({ success: true });
+  } else {
+    return res
+      .status(401)
+      .json({ errors: [{ field: "password", error: "Incorrect password" }] });
+  }
 }
 
-
 function createMD5Hash(input: string): string {
-  return crypto.createHash('md5').update(input).digest('hex');
+  return crypto.createHash("md5").update(input).digest("hex");
 }
