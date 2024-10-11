@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import cookie from "cookie";
 import { prisma } from "@/lib/prisma";
+import crypto from 'crypto';
 
 interface ValidationError {
   field: string;
@@ -52,12 +53,14 @@ export default async function handler(
   //     .json({ errors: [{ field: "method", error: "Method Not Allowed" }] });
   // }
 
-  const { password, email } = req.body;
+  const { password, email } = JSON.parse(req.body);
   const errors: ValidationError[] = [];
 
   const emailError = validateEmail(email);
   const passwordError = validatePassword(password);
 
+
+  
   if (emailError) errors.push(emailError);
   if (passwordError) errors.push(passwordError);
 
@@ -73,7 +76,7 @@ export default async function handler(
       .json({ errors: [{ field: "email", error: "Email not found" }] });
   }
 
-  if (password === user.password) {
+  if (createMD5Hash(password) === user.password) {
     setAuthCookie(res);
     return res.status(200).json({ success: true });
   } else {
@@ -81,4 +84,9 @@ export default async function handler(
       .status(401)
       .json({ errors: [{ field: "password", error: "Incorrect password" }] });
   }
+}
+
+
+function createMD5Hash(input: string): string {
+  return crypto.createHash('md5').update(input).digest('hex');
 }
