@@ -44,13 +44,13 @@ export default async function handler(
   res: NextApiResponse
 ) {
  
-  console.log(req.method);
-  console.log((req.method !== 'POST').toString());
-  if (req.method !== 'POST') {
-    return res
-      .status(405)
-      .json({ errors: [{ field: "method", error: "Method Not Allowed" }] });
-  }
+  // console.log(req.method);
+  // console.log((req.method !== 'POST').toString());
+  // if (req.method !== 'POST') {
+  //   return res
+  //     .status(405)
+  //     .json({ errors: [{ field: "method", error: "Method Not Allowed" }] });
+  // }
 
   const { password, email } = req.body;
   const errors: ValidationError[] = [];
