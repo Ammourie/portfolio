@@ -43,8 +43,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // console.clear();
-  // console.log(req.method);
+ 
+  console.log(req.method);
+  console.log((req.method !== 'POST').toString());
   if (req.method !== 'POST') {
     return res
       .status(405)

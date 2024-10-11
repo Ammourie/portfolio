@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { routes, protectedRoutes } from "@/app/resources";
-import { Flex, Spinner, Input, Button, Heading } from "@/once-ui/components";
+import { Flex, Spinner, Input, Button, Heading, Text } from "@/once-ui/components";
 
 interface RouteGuardProps {
   children: React.ReactNode;
@@ -80,11 +80,13 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
       setError(undefined);
     } else {
 
+if(response.status === 405) {
+  setError([{ field: "general", error: "Method Not Allowed" }]);
+  return;
+}
 
-
-        
-      console.clear();
-      console.log(response);
+    //   console.clear();
+    //   console.log(response);
       const json = await response.json();
       if (json.errors && Array.isArray(json.errors)) {
         const emailError = json.errors.find((error: { field: string; }) => error.field === "email");
@@ -161,6 +163,12 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
           }}
           error={error && error.find((e) => e.field === "password")?.error}
         />
+
+        {error && error.find(e => e.field === 'general') && (
+          <Text style={{ color: "error", textAlign: "center" }}>
+            {error.find(e => e.field === 'general')?.error}
+          </Text>
+        )}
         <Button onClick={handlePasswordSubmit} size="l">
           Submit
         </Button>
