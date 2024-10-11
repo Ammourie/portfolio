@@ -72,12 +72,17 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
         "Access-Control-Allow-Credentials": "true"
       },
       body: JSON.stringify({ password, email }),
+      mode: "no-cors"
     });
 
     if (response.ok) {
       setIsAuthenticated(true);
       setError(undefined);
     } else {
+
+
+
+        
       console.clear();
       console.log(response);
       const json = await response.json();
