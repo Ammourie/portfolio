@@ -14,6 +14,7 @@ import TableOfContents from "@/app/components/TableOfContents";
 import AboutMeCard from "./components/about-me-card";
 import styles from "./home.module.scss";
 import Separator from "./components/separator";
+import { prisma } from "@/lib/prisma";
 export function generateMetadata() {
   const title = home.title;
   const description = home.description;
@@ -66,7 +67,9 @@ const structure = [
   },
 ];
 
-export default function About() {
+export default async function About() {
+  const user = await prisma.user.findUnique({ where: { email:"mohammed.ammourie@gmail.com" } });
+if(user) {return <div>User found {user.email}</div>}
   return (
     <Flex fillWidth maxWidth="m" direction="column">
       <script
@@ -276,7 +279,12 @@ export default function About() {
               </Heading>
               <Flex direction="column" fillWidth gap="l">
                 <Text variant="heading-strong-l">Proficient</Text>
-                <Flex fillWidth gap="s" wrap className={styles.technical__proficient}>
+                <Flex
+                  fillWidth
+                  gap="s"
+                  wrap
+                  className={styles.technical__proficient}
+                >
                   {home.technical.skills
                     .filter((skill) => skill.isProficient)
                     .map((skill, index) => (
@@ -298,7 +306,12 @@ export default function About() {
                 </Flex>
                 <Flex direction="column" fillWidth gap="l">
                   <Text variant="heading-strong-l">Familiar</Text>
-                  <Flex fillWidth gap="m" wrap className={styles.technical__familiar}>
+                  <Flex
+                    fillWidth
+                    gap="m"
+                    wrap
+                    className={styles.technical__familiar}
+                  >
                     {home.technical.skills
                       .filter((skill) => skill.isFamiliar)
                       .map((skill, index) => (
