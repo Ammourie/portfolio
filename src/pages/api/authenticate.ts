@@ -45,21 +45,21 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "POST") {
-    // Return a dummy response for testing purposes
-    return res.status(200).json({
-      success: true,
-      message: "This is a dummy response for testing",
-      user: {
-        id: "dummy-id",
-        email: "dummy@example.com",
-        name: "Dummy User",
-      },
-    });
-    // return res
-    //   .status(405)
-    //   .json({ errors: [{ field: "method", error: "Method Not Allowed" }] });
-  }
+  // if (req.method !== "POST") {
+  //   // Return a dummy response for testing purposes
+  //   return res.status(200).json({
+  //     success: true,
+  //     message: "This is a dummy response for testing",
+  //     user: {
+  //       id: "dummy-id",
+  //       email: "dummy@example.com",
+  //       name: "Dummy User",
+  //     },
+  //   });
+  //   // return res
+  //   //   .status(405)
+  //   //   .json({ errors: [{ field: "method", error: "Method Not Allowed" }] });
+  // }
 
   const { password, email } = req.body;
   const errors: ValidationError[] = [];
