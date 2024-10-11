@@ -83,7 +83,7 @@ export default async function handler(
         .json({ errors: [{ field: "password", error: "Incorrect password" }] });
     }
   } catch (error) {
-    console.error("Error finding user:", error);
+    // console.error("Error finding user:", error);
     return res.status(500).json({
       errors: [
         {
