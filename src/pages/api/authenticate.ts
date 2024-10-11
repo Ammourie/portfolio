@@ -88,7 +88,7 @@ export default async function handler(
       errors: [
         {
           field: "general",
-          error: "An error occurred while processing your request",
+          error: error instanceof Error ? error.message : "An unknown error occurred",
         },
       ],
     });
