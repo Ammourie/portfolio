@@ -75,6 +75,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
       setError(undefined);
     } else {
       console.clear();
+      console.log(response);
       
       const errorMessage = await response.json();
       console.log(errorMessage);
