@@ -66,7 +66,11 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
   const handlePasswordSubmit = async () => {
     const response = await fetch("/api/authenticate", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true"
+      },
       body: JSON.stringify({ password, email }),
     });
 
@@ -76,12 +80,10 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
     } else {
       console.clear();
       console.log(response);
-      
-      const errorMessage = await response.json();
-      console.log(errorMessage);
-      if (errorMessage.errors && Array.isArray(errorMessage.errors)) {
-        const emailError = errorMessage.errors.find((error: { field: string; }) => error.field === "email");
-        const passwordError = errorMessage.errors.find((error: { field: string; }) => error.field === "password");
+      const json = await response.json();
+      if (json.errors && Array.isArray(json.errors)) {
+        const emailError = json.errors.find((error: { field: string; }) => error.field === "email");
+        const passwordError = json.errors.find((error: { field: string; }) => error.field === "password");
         
         setError([
           ...(emailError ? [{ field: "email", error: emailError.error }] : []),
