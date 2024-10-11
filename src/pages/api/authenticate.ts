@@ -66,26 +66,32 @@ export default async function handler(
     return res.status(400).json({ errors });
   }
 
-  if (email === "a@b.c" && password === "12345678") {
-    setAuthCookie(res);
-    return res.status(200).json({ success: true });
-  }
+  try {
+    const user = await prisma.user.findUnique({ where: { email: email } });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ errors: [{ field: "email", error: "Email not found" }] });
+    }
 
-  const user = await prisma.user.findUnique({ where: { email:"mohammed.ammourie@gmail.com" } });
-
-  if (!user) {
-    return res
-      .status(404)
-      .json({ errors: [{ field: "email", error: "Email not found" }] });
-  }
-
-  if (createMD5Hash(password) === user.password) {
-    setAuthCookie(res);
-    return res.status(200).json({ success: true });
-  } else {
-    return res
-      .status(401)
-      .json({ errors: [{ field: "password", error: "Incorrect password" }] });
+    if (createMD5Hash(password) === user.password) {
+      setAuthCookie(res);
+      return res.status(200).json({ success: true });
+    } else {
+      return res
+        .status(401)
+        .json({ errors: [{ field: "password", error: "Incorrect password" }] });
+    }
+  } catch (error) {
+    console.error("Error finding user:", error);
+    return res.status(500).json({
+      errors: [
+        {
+          field: "general",
+          error: "An error occurred while processing your request",
+        },
+      ],
+    });
   }
 }
 
