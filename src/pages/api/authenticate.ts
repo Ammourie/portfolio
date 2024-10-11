@@ -50,21 +50,21 @@ export default async function handler(
       .status(405)
       .json({ errors: [{ field: "method", error: "Method Not Allowed" }] });
   }
-  setAuthCookie(res);
-  return res.status(200).json({ success: true });
+  // setAuthCookie(res);
+  // return res.status(200).json({ success: true });
 
-  // const { password, email } = req.body;
-  // const errors: ValidationError[] = [];
+  const { password, email } = req.body;
+  const errors: ValidationError[] = [];
 
-  // const emailError = validateEmail(email);
-  // const passwordError = validatePassword(password);
+  const emailError = validateEmail(email);
+  const passwordError = validatePassword(password);
 
-  // if (emailError) errors.push(emailError);
-  // if (passwordError) errors.push(passwordError);
+  if (emailError) errors.push(emailError);
+  if (passwordError) errors.push(passwordError);
 
-  // if (errors.length > 0) {
-  //   return res.status(400).json({ errors });
-  // }
+  if (errors.length > 0) {
+    return res.status(400).json({ errors });
+  }
 
   // const user = await prisma.user.findUnique({ where: { email } });
 
