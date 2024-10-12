@@ -5,7 +5,7 @@
     "postinstall": "prisma generate",
     "dev": "next dev",
     "export": "next export",
-    "build": "prisma generate && next build",
+    "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint"
   },
