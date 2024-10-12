@@ -14,6 +14,7 @@ import {
   FormHelperText,
   CircularProgress,
 } from "@mui/material";
+import toast from "react-hot-toast";
 
 const UploadIcon: React.FC = () => (
   <svg
@@ -95,7 +96,6 @@ const AddWorkPage: React.FC = () => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "default");
-
     try {
       const uploadResponse = await fetch(
         `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
@@ -163,12 +163,13 @@ const AddWorkPage: React.FC = () => {
 
       const result = await response.json();
       console.log('Project uploaded successfully:', result);
+      toast.success('Project uploaded successfully!');
       router.replace('/work');
       router.refresh(); // Revalidate and refresh the '/work' page data
 
     } catch (error) {
       console.error('Error in form submission:', error);
-      // Handle error (e.g., show error message to user)
+      toast.error('Failed to upload project. Please try again.');
     } finally {
       setIsLoading(false);
     }
