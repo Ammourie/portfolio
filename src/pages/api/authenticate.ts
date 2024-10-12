@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import cookie from "cookie";
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 import { log } from "console";
+import { prisma } from "@/lib/prisma";
 
 interface ValidationError {
   field: string;

@@ -1,4 +1,3 @@
-"use client";
 import {
   Avatar,
   Button,
@@ -10,42 +9,42 @@ import {
   Tag,
   Text,
 } from "@/once-ui/components";
+import { prisma } from "../lib/prisma";
 import { person, home, social, baseURL } from "@/app/resources";
 import TableOfContents from "@/app/components/TableOfContents";
 import AboutMeCard from "./components/about-me-card";
 import styles from "./home.module.scss";
 import Separator from "./components/separator";
-import { prisma } from "@/lib/prisma";
 import { createContext } from "react";
 
-// export function generateMetadata() {
-//   const title = home.title;
-//   const description = home.description;
-//   const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
+export function generateMetadata() {
+  const title = home.title;
+  const description = home.description;
+  const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
 
-//   return {
-//     title,
-//     description,
-//     openGraph: {
-//       title,
-//       description,
-//       type: "website",
-//       url: `https://${baseURL}`,
-//       images: [
-//         {
-//           url: ogImage,
-//           alt: title,
-//         },
-//       ],
-//     },
-//     twitter: {
-//       card: "summary_large_image",
-//       title,
-//       description,
-//       images: [ogImage],
-//     },
-//   };
-// }
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: `https://${baseURL}`,
+      images: [
+        {
+          url: ogImage,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
+}
 
 const structure = [
   {
@@ -71,15 +70,7 @@ const structure = [
 ];
 
 export default function About() {
-  const click = () => {
-    const response = fetch("/api/hello", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: "mohammed.ammourie@", password: "password" }),
-    });
-  };
+ 
   return (
     <Flex fillWidth maxWidth="m" direction="column">
       <script
@@ -347,9 +338,7 @@ export default function About() {
           )}
         </Flex>
       </Flex>
-      <Button onClick={click} size="l">
-        Submit
-      </Button>
+     
     </Flex>
   );
 }
