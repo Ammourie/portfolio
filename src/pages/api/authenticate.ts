@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import cookie from "cookie";
-// import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
-import { log } from "console";
 import { prisma } from "@/lib/prisma";
+import { sql } from "@vercel/postgres";
 
 interface ValidationError {
   field: string;
@@ -68,7 +67,8 @@ export default async function handler(
   }
 
   try {
-    const user = await prisma.user.findUnique({ where: { email: email } });
+    const { rows } = await sql`SELECT * FROM "User" WHERE email = ${email} LIMIT 1`;
+    const user = rows[0];
     if (!user) {
       return res
         .status(404)
