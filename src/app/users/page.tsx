@@ -1,9 +1,14 @@
-import {prisma} from "@/lib/prisma";
 
 import { User } from "@prisma/client";
+import { sql } from "@vercel/postgres";
 
 export default async function UsersPage() {
-  const users: User[] = await prisma.user.findMany();
+  const { rows } = await sql`SELECT * FROM "User"`;
+  const users = rows.map((row) => ({
+    id: row.id,
+    email: row.email,
+    name: row.name,
+  }));
 
   return (
     <div>
