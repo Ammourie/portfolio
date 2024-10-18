@@ -13,6 +13,7 @@ datasource db {
 
 model Project {
   id          String        @id @default(cuid())
+  slug        String        @default("")
   title       String
   description String?
   mainImage   String?

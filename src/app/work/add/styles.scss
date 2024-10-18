@@ -1,0 +1,76 @@
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.add-work-page {
+  animation: fadeIn 0.5s ease-out;
+  max-width: 800px;
+  width: 100%;
+  margin: auto;
+  padding: 24px;
+
+  @media (max-width: 600px) {
+    padding: 16px;
+  }
+
+  &__title {
+    animation: slideUp 0.5s ease-out;
+    margin-bottom: 24px;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &__input {
+    animation: slideUp 0.5s ease-out;
+    animation-fill-mode: both;
+
+    @for $i from 1 through 5 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.1}s;
+      }
+    }
+  }
+
+  &__image-preview {
+    margin-top: 16px;
+    position: relative;
+    width: 100%;
+    height: 200px;
+
+    @media (max-width: 600px) {
+      height: 150px;
+    }
+  }
+
+  &__additional-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  &__additional-image {
+    position: relative;
+    width: 100px;
+    height: 100px;
+
+    @media (max-width: 600px) {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  &__submit-button {
+    margin-top: 24px;
+  }
+}

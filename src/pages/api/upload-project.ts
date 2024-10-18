@@ -9,7 +9,7 @@ export default async function handler(
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  const { title, description, mainImage, images } = req.body;
+  const { title, slug, description, mainImage, images } = req.body;
 
   if (!title) {
     return res.status(400).json({ error: "Title is required" });
@@ -17,17 +17,18 @@ export default async function handler(
 
   try {
     const result = await sql`
-      INSERT INTO "Project" (id, title, description, "mainImage", images, "createdAt", "updatedAt")
+      INSERT INTO "Project" (id, title, slug, description, "mainImage", images, "createdAt", "updatedAt")
       VALUES (
         gen_random_uuid(),
         ${title},
+        ${slug},
         ${description || null},
         ${mainImage || null},
         ${images},
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
       )
-      RETURNING id, title, description, "mainImage", images, "createdAt", "updatedAt"
+      RETURNING id, title, slug, description, "mainImage", images, "createdAt", "updatedAt"
     `;
 
     const insertedProject = result.rows[0];

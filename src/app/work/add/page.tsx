@@ -13,23 +13,11 @@ import {
   createTheme,
   FormHelperText,
   CircularProgress,
+  useMediaQuery,
 } from "@mui/material";
 import toast from "react-hot-toast";
-
-const UploadIcon: React.FC = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M11 15V3H13V15H11ZM4 13L12 5L20 13L18.6 14.4L13 8.8V21H11V8.8L5.4 14.4L4 13Z"
-      fill="currentColor"
-    />
-  </svg>
-);
+import EditorComponent from "@/app/components/sun-editor";
+import './styles.scss';
 
 const VisuallyHiddenInput = React.forwardRef<
   HTMLInputElement,
@@ -59,17 +47,13 @@ VisuallyHiddenInput.displayName = "VisuallyHiddenInput";
 
 interface FormData {
   title: string;
+  slug: string;
   description: string;
   mainImage: File | null;
   images: File[];
 }
 
-interface UploadData {
-  mainImage: string | null;
-  images: string[];
-  title: string;
-  description: string;
-}
+
 
 const darkTheme = createTheme({
   palette: {
@@ -91,6 +75,8 @@ const AddWorkPage: React.FC = () => {
   const [mainImageUrl, setMainImageUrl] = useState<string | null>(null);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const isMobile = useMediaQuery(darkTheme.breakpoints.down('sm'));
 
   const uploadImage = async (file: File, isMainImage: boolean = false): Promise<string> => {
     const formData = new FormData();
@@ -141,6 +127,7 @@ const AddWorkPage: React.FC = () => {
       // Prepare data for upload
       const workData = {
         title: data.title,
+        slug: data.title.toLowerCase().replace(/ /g, "-"),
         description: data.description,
         mainImage: finalMainImageUrl,
         images: finalImageUrls,
@@ -226,7 +213,7 @@ const AddWorkPage: React.FC = () => {
             <Button
               variant="contained"
               component="span"
-              startIcon={<UploadIcon />}
+              // startIcon={<UploadIcon />}
               sx={{
                 width: "100%",
                 py: 1.5,
@@ -264,78 +251,61 @@ const AddWorkPage: React.FC = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box
-        sx={{
-          maxWidth: 600,
-          margin: "auto",
-          padding: 3,
-          bgcolor: "background.default",
-          color: "text.primary",
-        }}
-      >
-        <Typography variant="h4" gutterBottom>
+      <Box className="add-work-page">
+        <Typography
+          variant={isMobile ? "h5" : "h4"}
+          className="add-work-page__title"
+          sx={{ mb: 4 }}
+        >
           Add New Project
         </Typography>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="add-work-page__form">
           <TextField
             label="Title"
             {...register("title", { required: "Title is required" })}
             fullWidth
-            margin="normal"
             error={!!errors.title}
             helperText={errors.title?.message}
+            className="add-work-page__input"
           />
-          <TextField
-            label="Description"
-            {...register("description", {
-              required: "Description is required",
-            })}
-            multiline
-            rows={4}
-            fullWidth
-            margin="normal"
-            error={!!errors.description}
-            helperText={errors.description?.message}
-          />
-          {renderFileInput("mainImage", "Upload Main Image")}
-          {mainImagePreview && (
-            <Box
-              sx={{
-                mt: 2,
-                position: "relative",
-                width: "100%",
-                height: "200px",
-              }}
-            >
-              <Image
-                src={mainImagePreview}
-                alt="Main image preview"
-                layout="fill"
-                objectFit="contain"
-              />
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={clearMainImage}
-                sx={{ mt: 2, position: "absolute", bottom: 0, right: 0 }}
-              >
-                Clear Main Image
-              </Button>
-            </Box>
-          )}
-          {renderFileInput("images", "Upload Additional Images", true)}
-          {imagesPreview.length > 0 && (
-            <Box sx={{ mt: 2 }}>
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+          <Box className="add-work-page__input">
+            <EditorComponent
+              control={control}
+              name="description"
+              error={!!errors.description}
+              required={true}
+              label="Description"
+            />
+          </Box>
+          
+          <Box className="add-work-page__input">
+            {renderFileInput("mainImage", "Upload Main Image")}
+            {mainImagePreview && (
+              <Box className="add-work-page__image-preview">
+                <Image
+                  src={mainImagePreview}
+                  alt="Main image preview"
+                  layout="fill"
+                  objectFit="contain"
+                />
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={clearMainImage}
+                  sx={{ mt: 2, position: "absolute", bottom: 0, right: 0 }}
+                >
+                  Clear Main Image
+                </Button>
+              </Box>
+            )}
+          </Box>
+          
+          <Box className="add-work-page__input">
+            {renderFileInput("images", "Upload Additional Images", true)}
+            {imagesPreview.length > 0 && (
+              <Box className="add-work-page__additional-images">
                 {imagesPreview.map((preview, index) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      position: "relative",
-                      width: "100px",
-                      height: "100px",
-                    }}
-                  >
+                  <Box key={index} className="add-work-page__additional-image">
                     <Image
                       src={preview}
                       alt={`Additional image ${index + 1}`}
@@ -344,34 +314,36 @@ const AddWorkPage: React.FC = () => {
                     />
                   </Box>
                 ))}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={clearAdditionalImages}
+                  sx={{ mt: 2 }}
+                >
+                  Clear Additional Images
+                </Button>
               </Box>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={clearAdditionalImages}
-                sx={{ mt: 2 }}
-              >
-                Clear Additional Images
-              </Button>
-            </Box>
-          )}
-          <Box sx={{ mt: 2, position: 'relative', height: 36, width: '100%' }}>
+            )}
+          </Box>
+          
+          <Box className="add-work-page__submit-button">
             {!isLoading && (
               <Button
                 type="submit"
                 variant="contained"
                 color="primary"
-                sx={{ display: "block", width: '100%' }}
+                fullWidth
               >
                 Add Project
               </Button>
             )}
-            {isLoading && (
+            { isLoading && (
               <CircularProgress
                 size={24}
                 sx={{
+                  color: '#FF0000',
                   position: 'absolute',
-                  top: '50%',
+                  // top: '50%',
                   left: '50%',
                   marginTop: '-12px',
                   marginLeft: '-12px',

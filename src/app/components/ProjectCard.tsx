@@ -1,153 +1,92 @@
 "use client";
 
-import { AvatarGroup, Flex, Heading, RevealFx, SmartImage, SmartLink, Text } from "@/once-ui/components";
+import {
+  AvatarGroup,
+  Button,
+  Flex,
+  Heading,
+  RevealFx,
+  Text,
+} from "@/once-ui/components";
 import { useEffect, useState } from "react";
-
+import { IProject } from "@/app/work/components/Projects";
+import Image from "next/image";
+import ImageViewer from "awesome-image-viewer";
 interface ProjectCardProps {
-    href: string;
-    images: string[];
-    title: string;
-    content: string;
-    description: string;
-    avatars: { src: string }[];
+  project: IProject;
 }
+export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-export const ProjectCard: React.FC<ProjectCardProps> = ({
-    href,
-    images = [],
-    title,
-    content,
-    description,
-    avatars
-}) => {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [isTransitioning, setIsTransitioning] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsTransitioning(true);
+    }, 1000);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsTransitioning(true);
-        }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
-        return () => clearTimeout(timer);
-    }, []);
-
-    const handleImageClick = () => {
-        if(images.length > 1) {
-            setIsTransitioning(false);
-            setTimeout(() => {
-                const nextIndex = (activeIndex + 1) % images.length;
-                setActiveIndex(nextIndex);
-                setTimeout(() => {
-                    setIsTransitioning(true);
-                }, 630);
-            }, 630);
-        }
-    };
-    
-    const handleControlClick = (index: number) => {
-        if (index !== activeIndex) {
-            setIsTransitioning(true);
-            setTimeout(() => {
-                setActiveIndex(index);
-                setTimeout(() => {
-                    setIsTransitioning(false);
-                }, 630);
-            }, 630);
-        }
-    };
-
-    return (
-        <Flex
-            fillWidth gap="m"
-            direction="column">
-            <Flex onClick={handleImageClick}>
-            <RevealFx
-                    style={{width: '100%'}}
-                    delay={0.4}
-                    trigger={isTransitioning}
-                    speed="fast">
-                    <SmartImage
-                        tabIndex={0}
-                        radius="l"
-                        alt={title}
-                        aspectRatio="16 / 9"
-                        src={images[activeIndex]}
-                        style={{
-                            border: '1px solid var(--neutral-alpha-weak)',
-                            ...(images.length > 1 && {
-                                cursor: 'pointer',
-                            }),
-                        }}/>
-                </RevealFx>
-            </Flex>
-            {images.length > 1 && (
-                <Flex
-                    gap="4" paddingX="s"
-                    fillWidth maxWidth={32}
-                    justifyContent="center">
-                    {images.map((_, index) => (
-                        <Flex
-                            key={index}
-                            onClick={() => handleControlClick(index)}
-                            style={{
-                                background: activeIndex === index 
-                                    ? 'var(--neutral-on-background-strong)' 
-                                    : 'var(--neutral-alpha-medium)',
-                                cursor: 'pointer',
-                                transition: 'background 0.3s ease',
-                            }}
-                            fillWidth
-                            height="2">
-                        </Flex>
-                    ))}
-                </Flex>
-            )}
-            <Flex
-                mobileDirection="column"
-                fillWidth paddingX="l" paddingTop="xs" paddingBottom="m" gap="l">
-                {title && (
-                    <Flex
-                        flex={5}>
-                        <Heading
-                            as="h2"
-                            wrap="balance"
-                            variant="display-strong-xs">
-                            {title}
-                        </Heading>
-                    </Flex>
-                )}
-                {(avatars?.length > 0 || description?.trim() || content?.trim()) && (
-                    <Flex
-                        flex={7} direction="column"
-                        gap="s">
-                        {avatars?.length > 0 && (
-                            <AvatarGroup
-                                avatars={avatars}
-                                size="m"
-                                reverseOrder/>
-                        )}
-                        {description?.trim() && (
-                            <Text
-                                wrap="balance"
-                                variant="body-default-s"
-                                onBackground="neutral-weak">
-                                {description}
-                            </Text>
-                        )}
-                        {content?.trim() && (
-                            <SmartLink
-                                suffixIcon="chevronRight"
-                                style={{margin: '0', width: 'fit-content'}}
-                                href={href}>
-                                    <Text
-                                        variant="body-default-s">
-                                        Read case study
-                                    </Text>
-                            </SmartLink>
-                        )}
-                    </Flex>
-                )}
-            </Flex>
-        </Flex>
-    );
+  return (
+    <Flex fillWidth gap="m" direction="column">
+      <Flex alignItems="center" gap="s" justifyContent="flex-start">
+        <RevealFx
+          style={{ width: "auto" }}
+          delay={0.4}
+          trigger={isTransitioning}
+          speed="fast"
+        >
+          <Image
+            tabIndex={0}
+            alt={project.title}
+            width={100}
+            height={100}
+            src={project.mainImage!}
+            style={{
+              border: "1px solid var(--neutral-alpha-weak)",
+            }}
+          />
+        </RevealFx>
+        {project.title && (
+          <Heading as="h2" wrap="balance" variant="display-strong-xs">
+            {project.title}
+          </Heading>
+        )}
+      </Flex>
+      <Flex
+        mobileDirection="column"
+        fillWidth
+        paddingX="l"
+        paddingTop="xs"
+        paddingBottom="m"
+        gap="l"
+      >
+        {project.description?.trim() && (
+          <Flex flex={7} direction="column" gap="s">
+            <Text
+              wrap="balance"
+              variant="body-default-s"
+              onBackground="neutral-weak"
+              dangerouslySetInnerHTML={{ __html: project.description }}
+            />
+          </Flex>
+        )}
+      </Flex>
+      <Flex justifyContent="start" paddingTop="m" paddingBottom="m" fillWidth>
+        <Button
+          onClick={() => {
+            new ImageViewer({
+              images: project.images.map((image) => ({
+                mainUrl: image,
+              })),
+            });
+          }}
+          variant="primary"
+          style={{ width: "25%" }}
+        >
+          Images
+        </Button>
+      </Flex>
+    </Flex>
+  );
 };
