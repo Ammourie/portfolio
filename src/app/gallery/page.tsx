@@ -60,7 +60,7 @@ export default function Gallery() {
 					}),
 				}}
 			/>
-            <MasonryGrid/>
+            <MasonryGrid imageUrls={gallery.images.map((image) => image.src)}/>
         </Flex>
     );
 }
